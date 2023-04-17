@@ -22,6 +22,16 @@ const Slider = (props) => {
     [emblaApi]
   );
 
+  useEffect(() => {
+    fetch("/api/")
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setSelectedIndex(emblaApi.selectedScrollSnap());
@@ -37,12 +47,12 @@ const Slider = (props) => {
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, setScrollSnaps, onSelect]);
 
-  if (!data) {
+  if (isLoading) {
     return (
       <div>
-        Loading... <span style={{ display: "flex" }}></span>
+        <span style={{ display: "flex" }}>Loading...</span>
         <Image
-          src="loadingcoffeebean.jpg"
+          src="/loadingcoffeebean.jpg"
           alt="moving coffeebeans"
           height={100}
           width={100}
