@@ -19,7 +19,7 @@ const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 import Link from "next/link";
 import docs from "../styles/docs.module.scss";
 
-function Home() {
+const Home = ({ data }) => {
   const handleToScroll = (e) => {
     e.preventDefault();
     const href = e.currentTarget.href;
@@ -118,7 +118,7 @@ function Home() {
             </div>
             <div className="sandbox">
               <div className="sandbox__carousel">
-                <Slider slides={SLIDES} options={OPTIONS} />
+                <Slider data={data} />
               </div>
             </div>
 
@@ -217,6 +217,17 @@ function Home() {
       <Footer />
     </>
   );
-}
+};
 
 export default Home;
+
+export const getStaticProps = async () => {
+  const res = await fetch("https://fake-coffee-api.vercel.app/api");
+  const data = await res.json();
+
+  return {
+    props: {
+      data,
+    },
+  };
+};
